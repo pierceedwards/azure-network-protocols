@@ -1,74 +1,81 @@
 <p align="center">
-<img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/>
+  <img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/>
 </p>
 
-<h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this tutorial, we observe various network traffic to and from Azure Virtual Machines with Wireshark as well as experiment with Network Security Groups. <br />
+<h1 align="center">Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
 
-
-<h2>Environments and Technologies Used</h2>
-
-- Microsoft Azure (Virtual Machines/Compute)
-- Remote Desktop
-- Various Command-Line Tools
-- Various Network Protocols (SSH, RDH, DNS, HTTP/S, ICMP)
-- Wireshark (Protocol Analyzer)
-
-<h2>Operating Systems Used </h2>
-
-- Windows 10 (21H2)
-- Ubuntu Server 20.04
-
-<h2>High-Level Steps</h2>
-
-- Step 1: Create virtual machines ( 1 windows, 1 linux), must be in the same network.
-- Step 2: Install wireshark, observe ICMP, SSH, RDP, DHCP, and DNS traffic.
-- Step 3:Configure Firewall (Network Security Group)
-
-  
-<h2>Lab Prerequisets</h2>
-<p>
-<img width="849" alt="image" src="https://github.com/user-attachments/assets/af763d83-8846-435d-bafa-280312109acf" />
+<p align="center">
+  This tutorial explores the use of Network Security Groups and Wireshark to analyze traffic between Azure Virtual Machines across various protocols.
 </p>
 
-  - Step 1: VM's must be in the same resource group
-- Step 2: VM's must be in the same virtual network
-- Step 3: Note -> Windows uses RDP, Linux uses SSH to connect to remote clients.
+---
 
-<h2>Actions and Observations</h2>
+## 🧰 Environments and Technologies Used
 
-<p>
-<img width="918" alt="image" src="https://github.com/user-attachments/assets/4fed5d3f-ed49-4cad-8691-ac2bb71d7c78" />
-<img width="847" alt="image" src="https://github.com/user-attachments/assets/b6a83238-afee-41f0-9fc9-ee104cb7abf1" />
-<img width="948" alt="image" src="https://github.com/user-attachments/assets/d67d6dd3-4014-4750-881d-68879e6fb698" />
+- **Microsoft Azure** – Virtual Machines and Networking  
+- **Remote Desktop Protocol (RDP)**  
+- **Wireshark** – Network Protocol Analyzer  
+- **Command-Line Tools** – Ping, SSH, etc.  
+- **Network Protocols** – ICMP, SSH, RDP, DNS, DHCP, HTTP/HTTPS
 
-</p>
+## 💻 Operating Systems Used
 
-  - Step 1: install wiresahrk from Wireshark.org, in this case we download the windows versions and keep all defaults and install
-- Step 2: open wirshark an choose ethernet option
-- Step 3: wireshark is recieving traffic, search bar used to isolate traffic such as icmp, dns, dhcp, etc.
-  
-<p>
-<img width="958" alt="image" src="https://github.com/user-attachments/assets/153285ed-ff0b-4f7a-805c-eb6945fd59ad" />
-<img width="959" alt="image" src="https://github.com/user-attachments/assets/47c68b2e-93ab-4def-927e-a92b0f8d727a" />
+- **Windows 10 (21H2)**
+- **Ubuntu Server 20.04**
 
-</p>
+---
 
-- In this case, search ICMP, no traffic will be displayed yet
-- Obtain the PRIVATE IP address of the linux vm and ping, request and reply icmp packets will be displayed
-- You can do the same with pinging a website, connection can be confirmed with a "0% loss" reply.
-  
-<br />
+## 🔄 High-Level Steps
 
-<p>
-<img width="946" alt="image" src="https://github.com/user-attachments/assets/d7ad0903-5bc2-44dd-b85d-bd3746dbd386" />
-<img width="932" alt="image" src="https://github.com/user-attachments/assets/51b12f83-0d82-4e42-ab18-69507e881edc" />
-<img width="928" alt="image" src="https://github.com/user-attachments/assets/61619c52-3452-4ed6-ad1d-b92cc2f9ada0" />
-<img width="694" alt="image" src="https://github.com/user-attachments/assets/741542ef-6df1-4093-98b9-12d6100e82e3" />
+1. Create two VMs (Windows + Linux) in the same virtual network
+2. Install and use Wireshark to observe network traffic
+3. Configure and test Network Security Group (NSG) rules
 
-</p>
+---
 
-- We can do the same for other protocols such as, ssh, dhcp, dns, and rdp traffic as show in the images above.
-- Note: for ssh on the linux vm you will need the command : <ssh username@privateipaddress>
-- Note: rdp traffic is continuos because remote connection is live.
-<p>
+## 📅 Lab Prerequisites
+
+![Lab Prerequisites](https://github.com/user-attachments/assets/af763d83-8846-435d-bafa-280312109acf)
+
+- Both VMs must be in the **same resource group**
+- Both VMs must reside in the **same virtual network**
+- Use **RDP for Windows VM** and **SSH for Linux VM** to connect
+
+---
+
+## 🚀 Actions and Observations
+
+### Step 1: Install Wireshark on Windows VM
+
+- Download from [Wireshark.org](https://www.wireshark.org/)
+- Use default settings during installation
+- Open Wireshark and select your network interface (usually **Ethernet**)
+
+![Wireshark Setup](https://github.com/user-attachments/assets/4fed5d3f-ed49-4cad-8691-ac2bb71d7c78)  
+![Wireshark Interface](https://github.com/user-attachments/assets/b6a83238-afee-41f0-9fc9-ee104cb7abf1)  
+![Traffic Filters](https://github.com/user-attachments/assets/d67d6dd3-4014-4750-881d-68879e6fb698)
+
+---
+
+### Step 2: Analyze ICMP (Ping) Traffic
+
+- Use filter: `icmp`
+- No traffic appears until a ping is sent
+- From Windows VM, ping the Linux VM using its **private IP**:
+
+### Step 3: Analyze Other Protocols
+
+Observe different types of traffic:
+- SSH (Linux VM):
+- ssh username@10.0.0.5
+- RDP (Windows VM): Traffic is continuous due to active remote session
+- DNS: Occurs when resolving hostnames
+- DHCP: Observe during VM startup or IP refresh
+
+
+### 🧪 Final Notes
+
+- Wireshark is a powerful tool to observe live traffic and verify communication between systems
+- NSGs can be tested by allowing/blocking specific ports to observe effect on traffic
+- Filtering traffic (e.g., icmp, dns) makes protocol analysis simpler and more efficient
+
